@@ -1,0 +1,309 @@
+<html class="scroll-smooth" lang="id">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>Vunix-biodata</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&amp;family=Poppins:wght@300;600&amp;display=swap" rel="stylesheet"/>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0a0a23;
+            color: #e0e0ff;
+        }
+        h1, h2, h3 {
+            font-family: 'Orbitron', sans-serif;
+        }
+        .text-shimmer {
+            background: linear-gradient(110deg, #d044dd, #ffffff00);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer 3s infinite linear;
+        }
+        @keyframes shimmer {
+            100% {
+                background-position: 200% 0;
+            }
+        }
+        [data-scroll] {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s ease, transform 1s ease;
+            will-change: transform, opacity;
+        }
+        [data-scroll].visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .glow-text {
+            color: #a78bfa;
+            text-shadow:
+                0 0 5px #7c3aed,
+                0 0 10px #7c3aed,
+                0 0 20px #8b5cf6,
+                0 0 30px #8b5cf6,
+                0 0 40px #a78bfa,
+                0 0 55px #a78bfa,
+                0 0 75px #a78bfa;
+        }
+        .neon-border {
+            border: 2px solid #7c3aed;
+            box-shadow:
+                0 0 5px #7c3aed,
+                0 0 10px #7c3aed,
+                0 0 20px #8b5cf6,
+                0 0 30px #8b5cf6;
+            transition: box-shadow 0.5s ease;
+        }
+        .neon-border:hover {
+            box-shadow:
+                0 0 10px #a78bfa,
+                0 0 20px #a78bfa,
+                0 0 30px #c4b5fd,
+                0 0 40px #c4b5fd;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a23;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #7c3aed;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a78bfa;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <nav class="w-full bg-black bg-opacity-50 fixed top-0 z-50 backdrop-blur-md shadow-lg">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <img src="asset1/logo.png" class="rounded-circle" alt="logo" width="50px" height="50px">
+            <a class="text-2xl font-orbitron text-purple-400 hover:text-purple-600 transition duration-700" href="#home">
+                <div class="text-shimmer"><b>Vunixx</b></div>
+            </a>
+            <ul class="hidden md:flex space-x-8 text-purple-300 font-semibold tracking-wide">
+                <li><a class=" hover:text-purple-500 transition duration-700" href="#about">Tentang ku</a></li>
+                <li><a class="hover:text-purple-500 transition duration-700" href="#skills">Keahlian ku</a></li>
+                <li><a class="hover:text-purple-500 transition duration-700" href="#gallery">Galeri ku</a></li>
+                <li><a class="hover:text-purple-500 transition duration-700" href="#minigame">Mini Game</a></li>
+                <li><a class="hover:text-purple-500 transition duration-700" href="#follow">Sosial Media</a></li>
+                <button class="hover:text-purple-500 transition duration-700" onclick="window.location.href='index-id.html'"><u>ID</u></button>
+                <button class="hover:text-purple-500 transition duration-700" onclick="window.location.href='index.html'"><u>EN</u></button>
+            </ul>
+            <button aria-label="Toggle menu" class="md:hidden text-purple-400 focus:outline-none" id="menu-btn">
+                <i class="fas fa-bars fa-lg"></i>
+            </button>
+        </div>
+        <div class="hidden bg-black bg-opacity-50" id="mobile-menu">
+            <ul class="flex flex-col space-y-4 p-6 text-purple-300 font-semibold tracking-wide">
+                <li><a class="block hover:text-purple-500 transition duration-700" href="#about">Tentang ku</a></li>
+                <li><a class="block hover:text-purple-500 transition duration-700" href="#skills">Keahlian ku</a></li>
+                <li><a class="block hover:text-purple-500 transition duration-700" href="#gallery">Galeri ku</a></li>
+                <li><a class="block hover:text-purple-500 transition duration-700" href="#minigame">Mini Games</a></li>
+                <li><a class="block hover:text-purple-500 transition duration-700" href="#follow">Sosial Media</a></li>
+                <button class="block hover:text-purple-500 transition duration-700" onclick="window.location.href='index-id.html'"><u>ID</u></button>
+                <button class="block hover:text-purple-500 transition duration-700" onclick="window.location.href='index.html'"><u>EN</u></button>
+            </ul>
+        </div>
+    </nav>
+    <section class="pt-24 flex flex-col md:flex-row items-center max-w-7xl mx-auto px-6 min-h-[80vh]" id="home">
+        <div class="md:w-1/2" data-scroll="">
+            <h1 class="text-5xl md:text-6xl font-orbitron glow-text mb-4 leading-tight">
+                hai, saya
+                <span class="text-purple-400">Reyhan Cro [vunixx]</span>
+            </h1>
+            <p class="text-lg md:text-xl text-purple-300 max-w-xl mb-8 leading-relaxed">
+                Seorang gamer dan developer yang menyukai nuansa futuristik dan modern. Selalu bersemangat mengeksplorasi dunia digital dan teknologi dengan gaya yang keren dan penuh warna.
+            </p>
+            <h2 class="text-4xl font-orbitron glow-text mb-8 text-center">Scroll Kebawah ↓</h2>
+        </div>
+        <div class="md:w-1/2 mt-10 md:mt-0 flex justify-center" data-scroll="">
+            <img alt="foto ku" class="rounded-xl shadow-2xl border-4 border-purple-700" height="400" loading="lazy" src="asset1/foto1.jpg" width="400"/>
+        </div>
+    </section>
+    <section class="max-w-7xl mx-auto px-6 py-16" data-scroll="" id="about">
+        <h2 class="text-4xl font-orbitron glow-text mb-8 text-center">Tentang KU</h2>
+        <div class="max-w-4xl mx-auto text-center text-purple-300 text-lg leading-relaxed space-y-6">
+            <p>Aku adalah seorang penggemar gaming dan teknologi dengan passion dalam pengembangan software dan desain digital. Dengan latar belakang di bidang IT, aku selalu berusaha menggabungkan kreativitas dan teknologi untuk menciptakan sesuatu yang unik dan menarik.</p>
+            <p>Selain bermain game, aku juga suka membuat konten, belajar hal baru, dan berinteraksi dengan komunitas gamer dan developer di seluruh dunia. Aku percaya bahwa teknologi dan hiburan bisa berjalan beriringan untuk menciptakan pengalaman yang luar biasa.</p>
+        </div>
+    </section>
+    <section class="bg-gradient-to-r from-black via-purple-900 to-black py-16 px-6" data-scroll="" id="skills">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-orbitron glow-text mb-12 text-center">Keahlian KU</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 max-w-5xl mx-auto">
+                <div class="bg-black bg-opacity-70 rounded-xl p-6 neon-border hover:scale-105 transform transition duration-1000 ease-in-out">
+                    <i class="fas fa-code fa-3x text-purple-400 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-purple-300">Pemrograman</h3>
+                    <p class="text-purple-400">Menguasai JavaScript, Python, dan C++ untuk membuat aplikasi dan game.</p>
+                </div>
+                <div class="bg-black bg-opacity-70 rounded-xl p-6 neon-border hover:scale-105 transform transition duration-1000 ease-in-out">
+                    <i class="fas fa-gamepad fa-3x text-purple-400 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-purple-300">Gaming</h3>
+                    <p class="text-purple-400">Berpengalaman di berbagai genre game, dari FPS hingga RPG dan strategi.</p>
+                </div>
+                <div class="bg-black bg-opacity-70 rounded-xl p-6 neon-border hover:scale-105 transform transition duration-1000 ease-in-out">
+                    <i class="fas fa-paint-brush fa-3x text-purple-400 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-purple-300">Desain Grafis</h3>
+                    <p class="text-purple-400">Membuat konsep visual dan UI/UX dengan sentuhan modern dan futuristik.</p>
+                </div>
+                <div class="bg-black bg-opacity-70 rounded-xl p-6 neon-border hover:scale-105 transform transition duration-1000 ease-in-out">
+                    <i class="fas fa-network-wired fa-3x text-purple-400 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-purple-300">Jaringan &amp; Keamanan</h3>
+                    <p class="text-purple-400">Memahami dasar-dasar jaringan dan keamanan siber untuk proteksi data.</p>
+                </div>
+                <div class="bg-black bg-opacity-70 rounded-xl p-6 neon-border hover:scale-105 transform transition duration-1000 ease-in-out">
+                    <i class="fas fa-robot fa-3x text-purple-400 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-purple-300">AI &amp; Machine Learning</h3>
+                    <p class="text-purple-400">Eksplorasi teknologi AI untuk pengembangan game dan aplikasi cerdas.</p>
+                </div>
+                <div class="bg-black bg-opacity-70 rounded-xl p-6 neon-border hover:scale-105 transform transition duration-1000 ease-in-out">
+                    <i class="fas fa-headset fa-3x text-purple-400 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-purple-300">Streaming &amp; Konten</h3>
+                    <p class="text-purple-400">Membuat konten gaming dan teknologi dengan kualitas profesional.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="max-w-7xl mx-auto px-6 py-16" data-scroll="" id="gallery">
+        <h2 class="text-4xl font-orbitron glow-text mb-12 text-center">Galeri KU</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <img alt="Foto pemodelan asset game" class="rounded-lg shadow-lg hover:scale-105 transition duration-1000 ease-in-out cursor-pointer" height="250" loading="lazy" src="asset1/foto2.jpg" width="400"/>
+            <img alt="Foto penyusunan asset game" class="rounded-lg shadow-lg hover:scale-105 transition duration-1000 ease-in-out cursor-pointer" height="250" loading="lazy" src="asset1/foto3.jpg" width="400"/>
+            <img alt="Foto penyusunan asset game" class="rounded-lg shadow-lg hover:scale-105 transition duration-1000 ease-in-out cursor-pointer" height="250" loading="lazy" src="asset1/foto4.jpg" width="400"/>
+            <img alt="Foto upload asset game" class="rounded-lg shadow-lg hover:scale-105 transition duration-1000 ease-in-out cursor-pointer" height="250" loading="lazy" src="asset1/foto5.jpg" width="400"/>
+            <img alt="Foto pemrograman asset game" class="rounded-lg shadow-lg hover:scale-105 transition duration-1000 ease-in-out cursor-pointer" height="250" loading="lazy" src="asset1/foto6.jpg" width="400"/>
+        </div>
+    </section>
+    <section class="max-w-7xl mx-auto px-6 py-16" data-scroll="" id="minigame">
+        <h2 class="text-4xl font-orbitron glow-text mb-12 text-center">Mini Games</h2>
+        <div class="max-w-5xl mx-auto bg-black bg-opacity-70 rounded-xl p-8 neon-border">
+            <p class="text-purple-300 mb-6 text-center text-lg">klik untuk Coba Mini Games <b>TANPA DOWNLOAD!</b></p>
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-8 justify-center items-center">
+                <a aria-label="Mini Game 1" class="hover:scale-110 transform transition duration-500" href="https://cloud.onlinegames.io/games/2025/unity2/five-nights-at-poppy/index-og.html" rel="noopener" target="_blank">
+                    <img alt="five-nights-at-poppy" class="mx-auto rounded-lg shadow-lg" height="80" loading="lazy" src="https://www.onlinegames.io/media/posts/992/responsive/Five-Nights-at-Poppy-lg.jpg" width="80"/>
+                </a>
+                <a aria-label="Mini Game 2" class="hover:scale-110 transform transition duration-500" href="https://www.onlinegames.io/games/2024/unity/drift-king/index.html" rel="noopener" target="_blank">
+                    <img alt="drift king" class="mx-auto rounded-lg shadow-lg" height="80" loading="lazy" src="https://www.onlinegames.io/media/posts/729/responsive/Drift-King-sm.jpg" width="80"/>
+                </a>
+                <a aria-label="Mini Game 3" class="hover:scale-110 transform transition duration-500" href="https://www.onlinegames.io/games/2022/unity2/masked-special-forces/index.html" rel="noopener" target="_blank">
+                    <img alt="masked special forces" class="mx-auto rounded-lg shadow-lg" height="80" loading="lazy" src="https://www.onlinegames.io/media/posts/310/responsive/Masked-Special-Forces-FPS-lg.jpg" width="80"/>
+                </a>
+                <a aria-label="Mini Game 4" class="hover:scale-110 transform transition duration-500" href="https://cloud.onlinegames.io/games/2023/unity2/real-flight-simulator/index.html" rel="noopener" target="_blank">
+                    <img alt="real flight simulator" class="mx-auto rounded-lg shadow-lg" height="80" loading="lazy" src="https://www.onlinegames.io/media/posts/342/responsive/Real-Flight-Simulator-2-lg.jpg" width="80"/>
+                </a>
+                <a aria-label="Mini Game 5" class="hover:scale-110 transform transition duration-500" href="https://www.onlinegames.io/games/2022/unity4/cat-simulator/index.html" rel="noopener" target="_blank">
+                    <img alt="cat simulator" class="mx-auto rounded-lg shadow-lg" height="80" loading="lazy" src="https://www.onlinegames.io/media/posts/330/responsive/Cat-Simulator-Online-lg.jpg" width="80"/>
+                </a>
+                <a aria-label="Mini Game 6" class="hover:scale-110 transform transition duration-500" href="https://cloud.onlinegames.io/games/2024/unity2/fps-strike/index-og.html" rel="noopener" target="_blank">
+                    <img alt="Logo mini game dengan ikon pedang dan perisai neon ungu biru" class="mx-auto rounded-lg shadow-lg" height="80" loading="lazy" src="https://www.onlinegames.io/media/posts/902/responsive/fps-strike-online-lg.jpg" width="80"/>
+                </a>
+                <a aria-label="Mini Game 7" class="hover:scale-110 transform transition duration-500" href="https://www.onlinegames.io/games/2022/unity3/battle-royale-simulator/index.html" rel="noopener" target="_blank">
+                    <img alt="battleroyale simulator" class="mx-auto rounded-lg shadow-lg" height="80" loading="lazy" src="https://www.onlinegames.io/media/posts/633/responsive/Battle-Royale-Simulator-lg.jpg" width="80"/>
+                </a>
+                <a aria-label="Mini Game 8" class="hover:scale-110 transform transition duration-500" href="https://www.crazygames.com/embed/worldguessr" rel="noopener" target="_blank">
+                    <img alt="world guesser" class="mx-auto rounded-lg shadow-lg" height="80" loading="lazy" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMSEhUTEhIWFRUVGBUVFRcXFhcXFhcWFRYWFxUXF
+                    xUYHSggGBolHRcVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGhAQGi0lICYtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAOEA4QMBEQACEQEDEQH/xAAbAAACAwEBAQAAAAAAAAAAAAAEBQIDBgEAB//EAEMQAAEDAQUFBgMECAYBBQAAAAEAAgMRBAUSITEGQVFhcRMi
+                    MoGRobHB0UJSkuEUFSMzcqKy8AcWU2KC8SQ0Q2PC0v/EABoBAAIDAQEAAAAAAAAAAAAAAAMEAAECBQb/xAAyEQACAgICAQMEAQIFBAMAAAAAAQIDBBESITEFE0EiMlFhFEKhFTNScYEjkcHhBrHR/9oADAMBAAIRAxEAPwD6hI9OiwLJIrIDSPUIDySKFA75FCFD5FZCh8ihCl0ihCl0isordKoQrdKoQgZVCEe1UIc7RTRD3aK
+                    EO9ooQkJVCExKoQmJVCFrZFCFrZFRC5kihC5sqzOSitsJXXKySjHycM9enWg/Ncm2+Vj18Ho8bDjSt/JS6cfeb5IGxxb/AACzTbwc9xH1U3rwa4KS0xjdO0FCGTHLQP8A/wBfVPUZX9Mzj5npulzrNVHInzitaLsahQDI9WQGkeoQGkkUKBpJFZAZ8ihAd8ihCh8isoJs91zSZhhA4u7o99fJBnkQj8hI1SkFf5fp+8nY3oK/Eh
+                    AeZv7YhFj/AJZz9UWbfafTCPmq/k2f6S/ah+T36hhd4bT6hp+BU/lTXmJPZh8Mql2ZeM2PY/8AlPvl7okcpN6aMSpa+QH9Vy1IwGo6U9dCm12toUnbGPllzbkk/wBo8/otcQLy4IsFxO+8PdX7Zl5kfwRdcbvvD0Kv2yv5kfwVPuZ4+6fP8lXts0syByyXS4uo/ut3nI+QQbucI9LZp5UNdGhjuuzUphrzLjX4rkTyLl56B/yN/
+                    IPaLgYf3bi3kcx9VqGfOP3dhI3Cu1XfLF4m1H3hmPy80/Vkwn8h42JlDJEwbK7ZasIXLzbdvgj0HpWMlH3JGXvO9yDTM8AkktnVnNRWx3Bcs2EEubi1w1OXKulU3/DnrZzF6rDlpoHc9zCWuBBGoKUlFxepHUqtjYtxOk4lQRtfJrNj70L2GJx70dKc2aexy8wupiWOS4s856njKuXOPhmlxpw5fYDI9QoFkkUKBpHqyA0kihAa
+                    SRQgZY7pc8Y3ns49anUjkPmfdL2ZKj1HthYVN9vpEpL0ggygjxu++7P0P0ohKq23ub0jfOEPtFdqvieTV5A4DL80xDGrj8ApXSYJhJ1z65oqSXgE5BVlsTn+Ftee71WkmwU7Yx8jezXGPtmvIZD11WuK+RWWU39qG9msNBRraLMpVw7ZhK23rsNbd1PE4D3SlmfGP2jdfps5dyejuCEby7p+SXebdL7UMrAph9zO1j3RHzB+az7
+                    mUzftYiOFzP8AR/v1U5ZRXDE/BU9sJ1Y5v4laysmHwU8XEkUOscbvC/1oUWPqcl1KIKXpMX9kgaWwPGYz6fRNQyse7qSELfT7q+0t/wCxRHK8Hig5GHRrkpaFVzTDDaDSlFxJPT6Y3Fy12KbbYWEF3hOZJH0RqsyyHW9jFEpSmo/kyd4SVWHJyk5M9/VBQrUTJ25xEgdwII8jVbg9NMFdDlFo+mWG2NkY17Tk4VH06hdyElJbR5Kytwk4sjelkErCftNBIPxCXyalOO/kbwcl1
+                    WJfDMq6UsK5CPVPtDPY+0k2vLex9emR+ICcxPvOV6nr2T6BjXU0jz3YFK9QyCSPVkBpHqEBXuqp/uQaxWZlnaJJ83nwx606jefYJKdsrXwr/wC4woRguUhLed6STHvHLc0afmUxXTGtbBSslN6PR3aaVe6h4anz4INmZGL1Efp9MnNbl0UvYGmlQpXmRk9MrI9LnXHlHseWG5xkX58hp5nen0kedtyJb4xHkFk8go5JAVXKT7CXYIxV5py3rn3Z
+                    uvph5OpRgLW5+DzbQ9/gGBvEjM9B9UtGiy3uQ1K+qpagjos4+1Vx/wB2ftonK8WuHwJzyrJfJYmFFIXbbPKyiJVmWQJUf7MlT4wdQEpdbQvuNxnYvDKiwjwuI9wuPZKLe4rQ5XnTj93ZW+f77fMLDm302Np0X+fJWabjVYYjkYk6u12hdfUuGI86D6+wKpeRj0ir3Mlfrsxc+aMj3ArtVgx6arSMtIO2ffJEcI03tPxHApmnIdYhl4cLlv5NC+8ciMJqRTOlBzrVM2ZkXH9nOp9LsU02+kZm8X
+                    AVXMR330tDvYKyGr5jpTA31BcfYD1XTw69fUcD1O7eoI2mNPaOPyYFK9QgJK9WQFkeoQaWOJtnj7eUd8/u27xXf1PsElbN2S9uIxCKhHnIz1ttbpXFzjUn25BN11qtaQCc3J7YRYIqDGdd3Ln1SOXf/Sjs+nYfXuT/AOAe23kG8yuetvo7bWlszlsvfvZ+gRY1r5YCdr1pI+jbGW4SxUJqW/D8l1KrPp034PJeoYureSXkZW+88JEcYxSHcNyQyMrm+
+                    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" width="80"/>
+                </a>
+                <a aria-label="Mini Game 9" class="hover:scale-110 transform transition duration-500" href="https://www.crazygames.com/embed/bloxdhop-io" rel="noopener" target="_blank">
+                    <img alt="bloxdhop io" class="mx-auto rounded-lg shadow-lg" height="80" loading="lazy" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyofQ4g9yW7gLlkcuCj3xheog0jY1vxp0z0w&s" width="80"/>
+                </a>
+                <a aria-label="Mini Game 10" class="hover:scale-110 transform transition duration-500" href="https://www.crazygames.com/embed/cg-fc-24" rel="noopener" target="_blank">
+                    <img alt="CFGC24" class="mx-auto rounded-lg shadow-lg" height="80" loading="lazy" src="https://imgs.crazygames.com/games/cg-fc-24/cover_16x9-1734927491009.png?metadata=none&quality=70&width=423" width="80"/>
+                </a>
+            </div>
+        </div>
+    </section>
+    <section class="bg-gradient-to-r from-purple-900 via-black to-purple-900 py-16 px-6" data-scroll="" id="follow">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-4xl font-orbitron glow-text mb-10">Sosial Media</h2>
+            <div class="flex flex-wrap justify-center gap-8 text-purple-300 text-4xl">
+                <a aria-label="GitHub" class="hover:text-purple-500 transition duration-700" href="https://github.com/vunixx" rel="noopener" target="_blank">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a aria-label="Instagram" class="hover:text-purple-500 transition duration-700" href="https://instagram.com/vunixx._" rel="noopener" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a aria-label="Discord" class="hover:text-purple-500 transition duration-700" href="https://discord.com/users/Rèy_von" rel="noopener" target="_blank">
+                    <i class="fab fa-discord"></i>
+                </a>
+                <a aria-label="YouTube" class="hover:text-purple-500 transition duration-700" href="https://youtube.com/@vunix-real?si=0gHzjNgIedYQJKPg" rel="noopener" target="_blank">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a aria-label="TikTok" class="hover:text-purple-500 transition duration-700" href="https://tiktok.com/@vunixx._" rel="noopener" target="_blank">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+    </section>
+    <footer class="bg-black bg-opacity-80 text-purple-400 text-center py-6 font-semibold tracking-wide">
+        Copyright © 2025 vunix All rights reserved.
+    </footer>
+    <script>
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Scroll animation with slow motion effect
+        const scrollElements = document.querySelectorAll('[data-scroll]');
+
+        const elementInView = (el, dividend = 1.25) => {
+            const elementTop = el.getBoundingClientRect().top;
+            return (
+                elementTop <=
+                (window.innerHeight || document.documentElement.clientHeight) / dividend
+            );
+        };
+
+        const displayScrollElement = (element) => {
+            element.classList.add('visible');
+        };
+
+        const hideScrollElement = (element) => {
+            element.classList.remove('visible');
+        };
+
+        const handleScrollAnimation = () => {
+            scrollElements.forEach((el) => {
+                if (elementInView(el, 1.25)) {
+                    displayScrollElement(el);
+                } else {
+                    hideScrollElement(el);
+                }
+            });
+        };
+
+        window.addEventListener('scroll', () => {
+            window.requestAnimationFrame(handleScrollAnimation);
+        });
+
+        // Trigger animation on load
+        window.addEventListener('load', () => {
+            handleScrollAnimation();
+        });
+    </script>
+</body>
+</html>

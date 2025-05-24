@@ -1,13 +1,18 @@
 <html class="scroll-smooth" lang="en">
 <head>
     <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
     <link rel="icon" type="image/png" href="logo.png">
     <title>Vunix-biodata</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&amp;family=Poppins:wght@300;600&amp;display=swap" rel="stylesheet"/>
     <style>
+        body {
+            user-select: none;
+            -webkit-user-select: none; /* Safari */
+            -ms-user-select: none;     /* IE10+/Edge */
+        }
         html {
             scroll-behavior: smooth;
         }
@@ -305,6 +310,22 @@
         window.addEventListener('load', () => {
             handleScrollAnimation();
         });
+        
+        document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '0')) {
+        e.preventDefault();
+              }
+        });
+
+        document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+        });
+
+       document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'c') {
+        e.preventDefault();
+            }
+       });
     </script>
 </body>
 </html>

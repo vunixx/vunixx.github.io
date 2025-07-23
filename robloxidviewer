@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox Username to User ID Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #00a2ff 0%, #0056cc 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: gradientShift 8s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background: linear-gradient(135deg, #00a2ff 0%, #0056cc 100%); }
+            50% { background: linear-gradient(135deg, #0056cc 0%, #00a2ff 100%); }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: containerFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes containerFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .logo {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 45px;
+            color: white;
+            font-weight: bold;
+            animation: logoGlow 3s ease-in-out infinite;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { 
+                box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 15px 40px rgba(255, 107, 107, 0.5);
+                transform: scale(1.05);
+            }
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+            background: #f8f9fa;
+        }
+
+        input:focus {
+            border-color: #00a2ff;
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 162, 255, 0.2);
+        }
+
+        .search-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #00a2ff, #0056cc);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 162, 255, 0.3);
+        }
+
+        .search-btn:active {
+            transform: translateY(0);
+        }
+
+        .search-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid #00a2ff;
+            text-align: left;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .result-label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .result-value {
+            color: #666;
+            font-family: 'Courier New', monospace;
+        }
+
+        .copy-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: #218838;
+        }
+
+        .error {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        .loading {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #00a2ff;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .features {
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .feature-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: rgba(0, 162, 255, 0.1);
+            border-radius: 8px;
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">R</div>
+        <h1>Roblox User ID Finder</h1>
+        <p class="subtitle">Masukkan username Roblox untuk mendapatkan User ID</p>
+        
+        <div class="input-group">
+            <input type="text" id="usernameInput" placeholder="Masukkan username Roblox..." maxlength="20">
+        </div>
+        
+        <button class="search-btn" onclick="getUserId()">
+            <span id="btnText">Cari User ID</span>
+        </button>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Mencari data...</p>
+        </div>
+        
+        <div class="result" id="result">
+            <div class="result-item">
+                <span class="result-label">Username:</span>
+                <span class="result-value" id="displayUsername">-</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">User ID:</span>
+                <div>
+                    <span class="result-value" id="displayUserId">-</span>
+                    <button class="copy-btn" onclick="copyToClipboard('displayUserId')">Copy</button>
+                </div>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Display Name:</span>
+                <span class="result-value" id="displayName">-</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Profile URL:</span>
+                <div>
+                    <span class="result-value" id="profileUrl">-</span>
+                    <button class="copy-btn" onclick="copyToClipboard('profileUrl')">Copy</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="error" id="error">
+            <strong>Error:</strong> <span id="errorMessage">Username tidak ditemukan!</span>
+        </div>
+        
+        <div class="features">
+            <h3 style="margin-bottom: 15px; color: #333;">Fitur:</h3>
+            <div class="feature-item">✅ Mendapatkan User ID dari username</div>
+            <div class="feature-item">✅ Menampilkan Display Name</div>
+            <div class="feature-item">✅ Generate profile URL</div>
+            <div class="feature-item">✅ Copy ke clipboard</div>
+        </div>
+    </div>
+
+    <script>
+        let currentData = null;
+
+        async function getUserId() {
+            const username = document.getElementById('usernameInput').value.trim();
+            const resultDiv = document.getElementById('result');
+            const errorDiv = document.getElementById('error');
+            const loadingDiv = document.getElementById('loading');
+            const searchBtn = document.querySelector('.search-btn');
+            const btnText = document.getElementById('btnText');
+
+            if (!username) {
+                showError('Masukkan username terlebih dahulu!');
+                return;
+            }
+
+            // Reset displays
+            resultDiv.classList.remove('show');
+            errorDiv.classList.remove('show');
+            loadingDiv.style.display = 'block';
+            searchBtn.disabled = true;
+            btnText.textContent = 'Mencari...';
+
+            try {
+                // Menggunakan Roblox API untuk mendapatkan user data
+                const response = await fetch(`https://api.roblox.com/users/get-by-username?username=${encodeURIComponent(username)}`);
+                
+                if (!response.ok) {
+                    throw new Error('API request failed');
+                }
+
+                const data = await response.json();
+                
+                if (data.success === false || !data.Id) {
+                    throw new Error('Username tidak ditemukan');
+                }
+
+                // Mendapatkan informasi tambahan
+                let displayName = data.Username;
+                try {
+                    const userResponse = await fetch(`https://users.roblox.com/v1/users/${data.Id}`);
+                    if (userResponse.ok) {
+                        const userData = await userResponse.json();
+                        displayName = userData.displayName || userData.name || data.Username;
+                    }
+                } catch (e) {
+                    console.log('Could not fetch additional user data');
+                }
+
+                currentData = {
+                    username: data.Username,
+                    userId: data.Id,
+                    displayName: displayName,
+                    profileUrl: `https://www.roblox.com/users/${data.Id}/profile`
+                };
+
+                displayResult(currentData);
+
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Username tidak ditemukan atau terjadi kesalahan!');
+            } finally {
+                loadingDiv.style.display = 'none';
+                searchBtn.disabled = false;
+                btnText.textContent = 'Cari User ID';
+            }
+        }
+
+        function displayResult(data) {
+            document.getElementById('displayUsername').textContent = data.username;
+            document.getElementById('displayUserId').textContent = data.userId;
+            document.getElementById('displayName').textContent = data.displayName;
+            document.getElementById('profileUrl').textContent = data.profileUrl;
+            
+            document.getElementById('result').classList.add('show');
+            document.getElementById('error').classList.remove('show');
+        }
+
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('error').classList.add('show');
+            document.getElementById('result').classList.remove('show');
+        }
+
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '#28a745';
+                }, 1000);
+            }).catch(() => {
+                // Fallback untuk browser yang tidak support clipboard API
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 1000);
+            });
+        }
+
+        // Enter key support
+        document.getElementById('usernameInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                getUserId();
+            }
+        });
+
+        // Auto-focus input
+        document.getElementById('usernameInput').focus();
+    </script>
+</body>
+</html>

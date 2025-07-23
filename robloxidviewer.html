@@ -244,6 +244,32 @@
             margin-right: 5px;
         }
 
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        .proxy-selector {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+            outline: none;
+        }
+
         @media (max-width: 600px) {
             .container {
                 margin: 10px;
@@ -266,6 +292,20 @@
             <div class="logo">R</div>
             <h1>Roblox User ID Finder</h1>
             <p class="subtitle">Masukkan username Roblox untuk mendapatkan User ID dan informasi profile</p>
+        </div>
+        
+        <div class="warning-box">
+            <strong>⚠️ Catatan:</strong> Tool ini menggunakan CORS proxy untuk mengakses Roblox API. Jika satu proxy tidak bekerja, coba proxy lainnya.
+        </div>
+
+        <div class="proxy-selector">
+            <label for="proxySelect">Pilih CORS Proxy:</label>
+            <select id="proxySelect">
+                <option value="https://api.allorigins.win/raw?url=">AllOrigins (Recommended)</option>
+                <option value="https://corsproxy.io/?">CorsProxy.io</option>
+                <option value="https://cors-anywhere.herokuapp.com/">CORS Anywhere</option>
+                <option value="">Direct (No Proxy - Mungkin tidak berfungsi)</option>
+            </select>
         </div>
         
         <div class="form-group">
@@ -308,24 +348,25 @@
         </div>
         
         <div class="info-box">
-            <div class="info-title">📋 Fitur Tool:</div>
+            <div class="info-title">📋 Cara Menggunakan:</div>
             <ul class="feature-list">
-                <li>Mencari User ID dari username Roblox</li>
-                <li>Menampilkan Display Name pengguna</li>
-                <li>Generate direct profile URL</li>
-                <li>Copy hasil ke clipboard</li>
-                <li>Support untuk semua username valid</li>
+                <li>Pilih CORS proxy yang berfungsi</li>
+                <li>Masukkan username Roblox yang valid</li>
+                <li>Klik tombol "Cari User ID"</li>
+                <li>Copy hasil yang dibutuhkan</li>
+                <li>Jika error, coba proxy lain</li>
             </ul>
         </div>
         
         <div class="footer">
-            <p>🌟 Tool gratis untuk developer Roblox | Menggunakan Official Roblox API</p>
+            <p>🌟 Tool gratis untuk developer Roblox | Menggunakan Official Roblox API via CORS Proxy</p>
         </div>
     </div>
 
     <script>
         async function searchUser() {
             const username = document.getElementById('usernameInput').value.trim();
+            const proxyUrl = document.getElementById('proxySelect').value;
             const resultContainer = document.getElementById('resultContainer');
             const errorContainer = document.getElementById('errorContainer');
             const loading = document.getElementById('loading');
@@ -350,23 +391,38 @@
             btnText.textContent = '🔍 Mencari...';
 
             try {
-                // Call Roblox API
-                const response = await fetch(`https://api.roblox.com/users/get-by-username?username=${encodeURIComponent(username)}`);
+                // Construct API URL with proxy
+                const apiUrl = 'https://api.roblox.com/users/get-by-username?username=' + encodeURIComponent(username);
+                const finalUrl = proxyUrl ? proxyUrl + encodeURIComponent(apiUrl) : apiUrl;
+                
+                console.log('Fetching:', finalUrl);
+
+                // Call API
+                const response = await fetch(finalUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                });
                 
                 if (!response.ok) {
-                    throw new Error(`HTTP Error: ${response.status}`);
+                    throw new Error(`HTTP Error: ${response.status} - Coba proxy lain`);
                 }
 
                 const data = await response.json();
+                console.log('API Response:', data);
                 
-                if (!data.success || !data.Id) {
+                if (!data.Id) {
                     throw new Error('Username tidak ditemukan di Roblox');
                 }
 
                 // Get additional user info
                 let displayName = data.Username;
                 try {
-                    const userInfoResponse = await fetch(`https://users.roblox.com/v1/users/${data.Id}`);
+                    const userInfoUrl = 'https://users.roblox.com/v1/users/' + data.Id;
+                    const userInfoFinalUrl = proxyUrl ? proxyUrl + encodeURIComponent(userInfoUrl) : userInfoUrl;
+                    
+                    const userInfoResponse = await fetch(userInfoFinalUrl);
                     if (userInfoResponse.ok) {
                         const userInfo = await userInfoResponse.json();
                         displayName = userInfo.displayName || userInfo.name || data.Username;
@@ -385,7 +441,13 @@
 
             } catch (error) {
                 console.error('Search error:', error);
-                showError(error.message || 'Terjadi kesalahan saat mencari username!');
+                let errorMsg = error.message || 'Terjadi kesalahan saat mencari username!';
+                
+                if (errorMsg.includes('CORS')) {
+                    errorMsg += ' - Coba pilih proxy yang berbeda!';
+                }
+                
+                showError(errorMsg);
             } finally {
                 // Reset button
                 loading.style.display = 'none';
@@ -447,6 +509,7 @@
         // Event listeners
         document.getElementById('usernameInput').addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
+                event.preventDefault();
                 searchUser();
             }
         });
@@ -457,6 +520,11 @@
         // Clear error saat user mulai mengetik
         document.getElementById('usernameInput').addEventListener('input', function() {
             hideAllContainers();
+        });
+
+        // Test proxy on page load
+        window.addEventListener('load', function() {
+            console.log('Roblox User ID Tool loaded successfully');
         });
     </script>
 </body>

@@ -175,11 +175,36 @@
             font-weight: 300;
         }
 
+        .pricing-card ul {
+            list-style: none;
+            text-align: left;
+            margin: 1.5rem 0 2rem;
+        }
+
+        .pricing-card ul li {
+            color: var(--neon-green);
+            font-weight: 500;
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .pricing-card ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--neon-green);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
         .pricing-card p {
             color: var(--text-secondary);
             margin-bottom: 2rem;
             line-height: 1.6;
         }
+
 
         .btn {
             display: inline-block;
@@ -387,9 +412,92 @@
             transform: translateY(0);
         }
 
+        /* Features Section */
+        .features {
+            padding: 5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .container-features {
+            text-align: center;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .feature-card:hover::before {
+            left: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: var(--neon-green);
+            box-shadow: 0 20px 40px rgba(0, 255, 65, 0.3);
+        }
+
+        .feature-card .feature-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            border: 2px solid currentColor;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            box-shadow: 0 0 20px currentColor;
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .feature-card h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--neon-purple);
+            font-weight: 700;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
-            .pricing-grid {
+            .pricing-grid, .features-grid {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
             }
@@ -408,6 +516,7 @@
             }
         }
     </style>
+
 </head>
 <body>
     <canvas id="bg-canvas"></canvas>
@@ -425,30 +534,113 @@
         <p>HIGH PERFORMANCE WHATSAPP BOT INTERFACE</p>
     </section>
 
+    <!-- Fitur Unggulan -->
+    <section class="features reveal" id="features">
+        <div class="container-features">
+            <h2 class="section-title" style="background-color: #140028;">FITUR UNGGULAN MIZUKI-MD</h2>
+            <p style="text-align: center; font-size: 1.3rem; color: var(--text-secondary); max-width: 800px; margin: 1.5rem auto 4rem;">Nikmati fitur WhatsApp Bot paling canggih dengan performa tinggi dan AI terintegrasi</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: rgba(0, 255, 65, 0.2);">↳</div>
+                    <h3>Media Downloader</h3>
+                    <p>Download video, audio, GIF dari IG, TikTok, YT, FB dengan kualitas terbaik</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: rgba(176, 38, 255, 0.2);">🖼️</div>
+                    <h3>AI Image Generator</h3>
+                    <p>Generate gambar AI dari text prompt menggunakan Stable Diffusion</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: rgba(255, 38, 185, 0.2);">🔒</div>
+                    <h3>Anti-Virus & Security</h3>
+                    <p>Proteksi lengkap dari malware, virus, dan serangan otomatis</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: rgba(0, 255, 255, 0.2);">🤖</div>
+                    <h3>AI Chatbot</h3>
+                    <p>Chatbot pintar dengan GPT integration dan response otomatis</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: rgba(255, 193, 7, 0.2);">🎵</div>
+                    <h3>Audio Converter</h3>
+                    <p>Convert suara ke text, text ke speech, dan edit audio</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: rgba(59, 130, 246, 0.2);">🎮</div>
+                    <h3>Games & Fun</h3>
+                    <p>TikTakToe, Tebak Gambar, Math Quiz, dan 20+ game interaktif</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: rgba(75, 192, 192, 0.2);">🔍</div>
+                    <h3>Smart Search</h3>
+                    <p>Pencarian pintar berbasis AI untuk konten dan informasi</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: rgba(255, 99, 132, 0.2);">✨</div>
+                    <h3>Sticker Maker</h3>
+                    <p>Buat sticker custom dari gambar, GIF, dan teks dengan AI</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Pricing -->
     <section class="pricing reveal">
         <h2 class="section-title">SYSTEM ACCESS PRICING</h2>
+
         <div class="pricing-grid">
             <div class="pricing-card reveal">
                 <h3>DAILY</h3>
                 <div class="price">3k <span>/ 3 Hari</span></div>
-                <p>Rp.1000/hari.</p>
+                <p>Rp.1000/hari - Cocok untuk tes fitur dasar</p>
+                <ul>
+                    <li>✓ Media Downloader (YT, IG, TikTok)</li>
+                    <li>✓ Sticker Maker Basic</li>
+                    <li>✓ 5+ Mini Games</li>
+                    <li>✓ Group Management Dasar</li>
+                    <li>✗ Fitur AI Premium</li>
+                </ul>
                 <a href="payment.html" class="btn">SEWA SEKARANG</a>
             </div>
+
             <div class="pricing-card reveal">
                 <h3>WEEKLY</h3>
                 <div class="price">6k <span>/ 7 Hari</span></div>
-                <p>Rp.857/hari.</p>
-                <p>Hemat 15% dari paket harian.</p>
+                <p>Rp.857/hari - Hemat 15% | Fitur Lengkap Mingguan</p>
+                <ul>
+                    <li>✓ Semua Fitur Daily +</li>
+                    <li>✓ AI Image Generator</li>
+                    <li>✓ Audio Tools Full</li>
+                    <li>✓ 15+ Games</li>
+                    <li>✓ Smart Search</li>
+                    <li>✗ Owner Tools Premium</li>
+                </ul>
                 <a href="payment.html" class="btn">SEWA SEKARANG</a>
             </div>
+
             <div class="pricing-card prime-card reveal">
                 <h3>MONTHLY</h3>
                 <div class="price">20k <span>/ 30 Hari</span></div>
-                <p>Rp.666/hari.</p>
-                <p>Lebih hemat 50% dari paket harian.</p>
+                <p>Rp.666/hari - Hemat 50% | PREMIUM FULL ACCESS</p>
+                <ul>
+                    <li>✓ Semua Fitur Weekly +</li>
+                    <li>✓ AI Chatbot GPT/Gemini</li>
+                    <li>✓ Anti-Virus Advanced</li>
+                    <li>✓ 30+ Games & RPG</li>
+                    <li>✓ Owner Tools Lengkap</li>
+                    <li>✓ Prioritas Support 24/7</li>
+                </ul>
                 <a href="payment.html" class="btn">SEWA SEKARANG</a>
             </div>
+
         </div>
     </section>
 

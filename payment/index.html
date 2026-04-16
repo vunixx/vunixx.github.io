@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran MIZUKI-MD | QRIS Secure</title>
+    <link rel="icon" href="/asset1/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #0a0014;
+            --bg-secondary: #140028;
+            --neon-purple: #b026ff;
+            --neon-pink: #ff26b9;
+            --neon-green: #00ff41;
+            --text-primary: #e8d5ff;
+            --text-secondary: #b8a0d8;
+            --glass-bg: rgba(20, 5, 35, 0.4);
+            --glass-border: rgba(176, 38, 255, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .payment-hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .payment-logo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 3px solid var(--neon-purple);
+            box-shadow: 0 0 30px var(--neon-purple), inset 0 0 30px rgba(176, 38, 255, 0.3);
+            margin-bottom: 2rem;
+            animation: rotateGlow 8s linear infinite;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-pink));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        @keyframes rotateGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .payment-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-pink), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 40px rgba(176, 38, 255, 0.5);
+            animation: glowPulse 2s ease-in-out infinite alternate;
+        }
+
+        .payment-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            max-width: 600px;
+            margin-bottom: 3rem;
+        }
+
+        .payment-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 3rem;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            margin: 2rem auto;
+        }
+
+        .payment-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--neon-purple);
+            box-shadow: 0 25px 50px rgba(176, 38, 255, 0.3);
+        }
+
+        .amount-section { margin-bottom: 2rem; }
+
+        .amount-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        #amountDisplay {
+            font-family: 'Orbitron', monospace;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--neon-green);
+            text-shadow: 0 0 25px var(--neon-green);
+            margin-bottom: 1rem;
+            letter-spacing: -2px;
+        }
+
+        .timer-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            background: rgba(0, 255, 65, 0.1);
+            border: 1px solid var(--neon-green);
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            margin: 2rem 0;
+            font-weight: 600;
+        }
+
+        #countdown {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            color: var(--neon-green);
+            text-shadow: 0 0 15px var(--neon-green);
+            font-weight: 900;
+        }
+
+        .qr-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.2);
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #qrContainer { transition: opacity 0.4s ease; }
+
+        #qrContainer canvas {
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .loading-spinner-neon { text-align: center; color: var(--neon-purple); }
+
+        .spinner-neon {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(176,38,255,0.3);
+            border-top: 4px solid var(--neon-purple);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .btn-neon {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--neon-purple);
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-neon:hover {
+            background: var(--neon-purple);
+            box-shadow: 0 0 25px var(--neon-purple);
+            transform: translateY(-3px);
+        }
+
+        .btn-green { border-color: var(--neon-green); color: var(--neon-green); }
+
+        .btn-green:hover { background: var(--neon-green); box-shadow: 0 0 25px var(--neon-green); }
+
+        .btn-pink { border-color: var(--neon-pink); color: var(--neon-pink); }
+
+        .btn-pink:hover { background: var(--neon-pink); box-shadow: 0 0 25px var(--neon-pink); }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .status-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+        }
+
+        .instructions {
+            background: rgba(255, 38, 185, 0.1);
+            border-left: 5px solid var(--neon-pink);
+            padding: 2rem;
+            border-radius: 0 15px 15px 0;
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+                .btn {
+            display: inline-block;
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--neon-purple);
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .instructions-title {
+            color: var(--neon-pink);
+            font-family: 'Orbitron', monospace;
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .steps-list {
+            list-style: none;
+        }
+
+        .steps-list li {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .steps-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--neon-green);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { text-shadow: 0 0 10px var(--neon-purple), 0 0 20px var(--neon-purple), 0 0 40px var(--neon-pink); }
+            50% { text-shadow: 0 0 20px var(--neon-purple), 0 0 30px var(--neon-purple), 0 0 60px var(--neon-pink); }
+        }
+
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            .payment-card { margin: 1rem; padding: 2rem; }
+            .action-buttons { grid-template-columns: 1fr; }
+            #amountDisplay { font-size: 2.5rem; }
+        }
+
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s;
+        }
+
+                footer {
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(176, 38, 255, 0.3);
+        }
+
+        .contact-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .contact-number {
+            font-family: 'Orbitron', monospace;
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--neon-pink);
+            text-shadow: 0 0 20px var(--neon-pink);
+            display: block;
+            margin: 1rem 0;
+            letter-spacing: 3px;
+        }
+
+        footer .btn {
+            background: var(--neon-purple);
+            color: white;
+            padding: 1.2rem 3rem;
+            font-size: 1.1rem;
+            margin-top: 2rem;
+            display: inline-block;
+        }
+
+        .copyright {
+            margin-top: 3rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .loader .logo {
+            width: 80px;
+            height: 80px;
+            border: 4px solid transparent;
+            border-top: 4px solid var(--neon-purple);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes glowPulseMessage {
+            0% { box-shadow: 0 0 10px currentColor20; }
+            100% { box-shadow: 0 0 25px currentColor40, 0 0 35px currentColor20; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="loader reveal" id="loader">
+        <div class="logo"></div>
+        <p>Generating Secure QRIS...</p>
+    </div>
+
+    <section class="payment-hero reveal" id="paymentHero">
+        <h1 class="payment-title">QRIS PAYMENT</h1>
+        <p class="payment-subtitle">Secure & Instant Payment Gateway for MIZUKI-MD</p>
+
+        <div class="payment-card reveal" id="paymentCard">
+            <div class="amount-section">
+                <span class="amount-label" id="amountLabel">Total Pembayaran</span>
+                <h2 id="amountDisplay">Rp 0</h2>
+            </div>
+
+            <div class="timer-section reveal" id="timerSection">
+                <i style="color: var(--neon-green); font-size: 1.5rem;">⏱</i>
+                <span>Waktu Tersisa:</span>
+                <span id="countdown">15:00</span>
+            </div>
+
+            <div id="messageContainer"></div>
+
+            <div class="qr-section reveal" id="qrContainer">
+                <div class="loading-spinner-neon">
+                    <div class="spinner-neon"></div>
+                    <p>Initializing QR Code Generator...</p>
+                </div>
+            </div>
+
+            <div id="merchantDisplay" style="display:none;">
+                <i style="color: var(--neon-green); font-size: 1.5rem; margin-right: 0.5rem;">🏪</i>
+                <span id="displayMerchantName" style="font-weight: 600;"></span>
+            </div>
+
+            <div id="actionButtons" class="action-buttons reveal" style="display:none;">
+                <button onclick="downloadQR()" class="btn-neon">
+                    <i>⬇</i> Download
+                </button>
+                <button onclick="copyQRCode()" class="btn-neon btn-green">
+                    <i>📋</i> Copy
+                </button>
+                <button onclick="shareQR()" class="btn-neon btn-pink">
+                    <i>↗</i> Share
+                </button>
+            </div>
+
+            <div class="status-grid reveal">
+                <div class="status-item"><i>🔒</i><span>Aman</span></div>
+                <div class="status-item"><i>⚡</i><span>Instan</span></div>
+                <div class="status-item"><i>✅</i><span>QRIS</span></div>
+            </div>
+
+            <div class="instructions reveal">
+                <div class="instructions-title">
+                    <i>ℹ</i> Cara Bayar
+                </div>
+                <ul class="steps-list">
+                    <li>Buka e-wallet / mobile banking Anda</li>
+                    <li>Pilih menu Scan QR / QRIS</li>
+                    <li>Scan kode QR di atas</li>
+                    <li>Konfirmasi pembayaran</li>
+                </ul>
+            </div>
+        </div>
+            <footer class="reveal">
+        <div class="container">
+            <div class="contact-title">BUTUH BANTUAN ATAU KONFIRMASI PEMBAYARAN?</div>
+            <div style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 1rem;">Hubungi System Administrator / Owner:</div>
+            <a href="https://wa.me/6289618530654?text=Halo%20Owner%20MIZUKI-MD,%20saya%20ingin%20mengirimkan%20bukti%20pembayaran%20sewa%20bot." class="btn" target="_blank">HUBUNGI VIA WHATSAPP</a>
+            <p class="copyright">&copy; 2026 MIZUKI-MD Project. All Systems Online.</p>
+        </div>
+    </footer>
+    </section>
+
+    <script>
+        let currentQRData = null, countdownInterval = null, timeLeft = 900;
+        const urlParams = new URLSearchParams(window.location.search);
+        const payAmount = Number(urlParams.get('pay'));
+
+        // Particle BG
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas); resizeCanvas();
+        let particles = [];
+        for (let i = 0; i < 60; i++) {
+            particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3, size: Math.random() * 2 + 1, color: Math.random() > 0.5 ? '#b026ff80' : '#ff26b980' });
+        }
+        function animateParticles() {
+            ctx.fillStyle = 'rgba(10, 0, 20, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                ctx.shadowColor = p.color; ctx.shadowBlur = 10;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fillStyle = p.color; ctx.fill();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // Reveals
+        const observer = new IntersectionObserver((entries) => entries.forEach(entry => entry.isIntersecting && entry.target.classList.add('active')));
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Loader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
+            }, 1500);
+        });
+
+        // Init
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!payAmount || payAmount < 1) { window.location.href = '404.html'; return; }
+
+            localStorage.setItem('QRIS_Utama', '00020101021126610014COM.GO-JEK.WWW01189360091431952319480210G1952319480303UMI51440014ID.CO.QRIS.WWW0215ID10264999833300303UMI5204581653033605802ID5914VUNIXX, Gaming6006BANTUL61055518462070703A01630436B0');
+            await generateQRIS();
+            startCountdown();
+        });
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount);
+        }
+
+        function showMessageNeon(text, type = 'danger') {
+            const container = document.getElementById('messageContainer');
+            let icon, bg, color;
+            if (type === 'success') { icon = '✅'; bg = 'rgba(0,255,65,0.3)'; color = 'var(--neon-green)'; }
+            else if (type === 'warning') { icon = '⚠'; bg = 'rgba(255,184,77,0.3)'; color = '#FFB84D'; }
+            else { icon = '❌'; bg = 'rgba(255,71,87,0.3)'; color = '#ff4757'; }
+            
+            container.innerHTML = `<div class="alert" style="background:${bg};border:1px solid ${color};color:${color};box-shadow:0 0 20px ${color}20;padding:1rem 1.5rem;border-radius:12px;display:flex;align-items:center;gap:0.5rem;font-weight:500;animation:glowPulseMessage 2s ease-in-out infinite alternate;"><span style="font-size:1.5rem;margin-right:0.8rem;">${icon}</span>${text}</div>`;
+            setTimeout(() => {
+                const alert = container.querySelector('.alert');
+                if (alert) { alert.style.opacity = '0'; alert.style.transform = 'translateY(-10px)'; setTimeout(() => alert.remove(), 400); }
+            }, 5000);
+        }
+
+        async function qris(id, harga) {
+            try {
+                const response = await fetch(`https://api-mininxd.vercel.app/qris?qris=${id}&nominal=${harga}`);
+                return await response.json();
+            } catch(e) { return { error: e.message }; }
+        }
+
+        async function generateQRIS() {
+            const qrisUtama = localStorage.getItem('QRIS_Utama');
+            document.getElementById('amountDisplay').textContent = formatCurrency(payAmount);
+            try {
+                showMessageNeon('🔄 Generating Secure QRIS...', 'warning');
+                const data = await qris(qrisUtama, payAmount);
+                if (!data || (!data.QR && !data.qr)) throw new Error('Gagal generate QRIS dari API');
+                currentQRData = data.QR || data.qr || data.qris;
+                if (data.merchant) {
+                    document.getElementById('displayMerchantName').textContent = data.merchant;
+                    document.getElementById('merchantDisplay').style.display = 'flex';
+                }
+                const canvas = document.createElement('canvas');
+                await QRCode.toCanvas(canvas, currentQRData, { width: 260, margin: 3, color: { dark: '#140028', light: '#e8d5ff' }, errorCorrectionLevel: 'H' });
+                const qrContainer = document.getElementById('qrContainer');
+                qrContainer.style.opacity = '0';
+                qrContainer.innerHTML = ''; qrContainer.appendChild(canvas);
+                requestAnimationFrame(() => {
+                    qrContainer.style.opacity = '1';
+                    qrContainer.style.transform = 'scale(1.05)';
+                    setTimeout(() => qrContainer.style.transform = 'scale(1)', 300);
+                });
+                document.getElementById('actionButtons').style.display = 'grid';
+                showMessageNeon('✅ QRIS Ready! Scan untuk bayar.', 'success');
+            } catch (error) {
+                document.getElementById('qrContainer').innerHTML = `<div style="text-align:center;padding:2rem;"><i style="font-size:4rem;color:#ff4757;margin-bottom:1rem;">❌</i><p style="color:var(--text-secondary);font-size:1.2rem;margin-bottom:1rem;">Gagal Generate QR</p><p style="color:#ff4757;">${error.message}</p><button onclick="generateQRIS()" class="btn-neon" style="width:180px;margin:1.5rem auto 0;border-color:#ff4757;color:#ff4757;">🔄 Coba Lagi</button></div>`;
+                showMessageNeon('❌ Error: ' + error.message, 'danger');
+            }
+        }
+
+        function startCountdown() {
+            function update() {
+                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60), seconds = timeLeft % 60;
+                document.getElementById('countdown').textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+                const timer = document.getElementById('timerSection');
+                if (timeLeft <= 60) {
+                    timer.style.background = 'rgba(255,71,87,0.3)';
+                    timer.style.borderColor = '#ff4757';
+                    timer.style.boxShadow = '0 0 20px rgba(255,71,87,0.5)';
+                    document.getElementById('countdown').style.color = '#ff4757';
+                }
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    showMessageNeon('⏰ QR Code kedaluwarsa. Refresh untuk baru.', 'warning');
+                    document.getElementById('qrContainer').innerHTML = `<div style="text-align:center;padding:2rem;"><i style="font-size:4rem;color:#FFB84D;margin-bottom:1rem;">⏰</i><p style="color:var(--text-secondary);font-size:1.2rem;margin-bottom:1.5rem;">QR Code Kedaluwarsa</p><button onclick="location.reload()" class="btn-neon" style="width:200px;margin:0 auto;border-color:#FFB84D;color:#FFB84D;">🔄 Refresh</button></div>`;
+                    document.getElementById('actionButtons').style.display = 'none';
+                }
+            }
+            update();
+            countdownInterval = setInterval(update, 1000);
+        }
+
+        function downloadQR() {
+            const canvas = document.querySelector('#qrContainer canvas');
+            if (canvas) {
+                const merchant = document.getElementById('displayMerchantName').textContent || 'MIZUKI-MD';
+                const link = document.createElement('a');
+                link.download = `MIZUKI-QRIS-${merchant}-${payAmount}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+                showMessageNeon('💾 QR Code berhasil diunduh!', 'success');
+            }
+        }
+
+        function copyQRCode() {
+            navigator.clipboard.writeText(currentQRData).then(() => showMessageNeon('📋 QRIS Data disalin!', 'success')).catch(() => showMessageNeon('❌ Gagal copy', 'danger'));
+        }
+
+        function shareQR() {
+            if (navigator.share) navigator.share({ title: 'MIZUKI-MD QRIS', text: `Bayar ${formatCurrency(payAmount)}`, url: window.location.href });
+            else navigator.clipboard.writeText(window.location.href).then(() => showMessageNeon('🔗 Link disalin!', 'success'));
+        }
+    </script>
+</body>
+</html>

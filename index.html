@@ -1,11 +1,122 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Choose Language</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Welcome to Vunixx official website">
+  <meta name="robots" content="index, follow">
+  <title>Vunixx Official</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at center, #1a0033, #05000a);
+      overflow: hidden;
+      color: white;
+    }
+
+    .container {
+      text-align: center;
+      padding: 50px;
+      border: 1px solid rgba(180, 0, 255, 0.3);
+      border-radius: 20px;
+      background: rgba(20, 0, 40, 0.35);
+      box-shadow: 
+        0 0 20px rgba(180, 0, 255, 0.4),
+        0 0 50px rgba(180, 0, 255, 0.2);
+      backdrop-filter: blur(12px);
+      width: 90%;
+      max-width: 450px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #d580ff;
+      text-shadow:
+        0 0 5px #b000ff,
+        0 0 15px #b000ff,
+        0 0 30px #8000ff;
+      margin-bottom: 15px;
+    }
+
+    p {
+      margin-bottom: 30px;
+      color: #ddd;
+      font-size: 1rem;
+    }
+
+    .btn {
+      display: block;
+      text-decoration: none;
+      margin: 12px 0;
+      padding: 14px;
+      border-radius: 12px;
+      color: white;
+      font-weight: bold;
+      letter-spacing: 1px;
+      background: linear-gradient(90deg, #8a00ff, #c000ff);
+      box-shadow:
+        0 0 10px #b000ff,
+        0 0 25px rgba(176, 0, 255, 0.6);
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow:
+        0 0 15px #d000ff,
+        0 0 35px rgba(208, 0, 255, 0.8);
+    }
+
+    .glow {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: rgba(180, 0, 255, 0.15);
+      filter: blur(100px);
+      border-radius: 50%;
+      animation: float 6s infinite ease-in-out;
+    }
+
+    .glow:nth-child(1) {
+      top: 10%;
+      left: 15%;
+    }
+
+    .glow:nth-child(2) {
+      bottom: 10%;
+      right: 15%;
+      animation-delay: 3s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+  </style>
 </head>
 <body>
-  <h1>Select Language</h1>
-  <a href="homepage-en.html">English</a><br>
-  <a href="homepage-id.html">Indonesia</a>
+
+  <div class="glow"></div>
+  <div class="glow"></div>
+
+  <div class="container">
+    <h1>VUNIXX</h1>
+    <p>Select your language / Pilih bahasa Anda</p>
+
+    <a class="btn" href="homepage-en.html">ENGLISH</a>
+    <a class="btn" href="homepage-id.html">INDONESIA</a>
+  </div>
+
 </body>
 </html>
